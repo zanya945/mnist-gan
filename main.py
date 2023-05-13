@@ -4,10 +4,11 @@ import matplotlib.pyplot as plt
 
 mnist = tf.keras.datasets.mnist
 
+
 def load_data(numclass=10):
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
-    xtrain = np.reshape(x_train, -1)
-    xtest = np.reshape(x_test, -1)
+    xtrain = np.reshape(x_train,  (x_train.shape[0], -1))
+    xtest = np.reshape(x_test, (x_test.shape[0], -1))
 
     xtrain = xtrain.astype('float32')
     xtest = xtest.astype('float32')
@@ -35,16 +36,16 @@ def build_model(X, input, output):
     w2 = tf.Variable(tf.random.normal([n1, n2]))
     b2 = tf.Variable(tf.random.normal([n2]))
 
-    Y1 = tf.add(np.matmul(X, w1), b1)
-    yhat = tf.add(np.matmul(Y1, w2), b2)
+    Y1 = tf.add(tf.matmul(X, w1), b1)
+    yhat = tf.add(tf.matmul(Y1, w2), b2)
     return yhat
 
 xtrain, ytrain, x_test, y_test = load_data()
 lr = 0.1
 batchsize = 128
-epcho = 5000
+epoch = 5000
 
-input = xtrain.shape[0]
+input = xtrain.shape[1]
 output = ytrain.shape[1]
 tf.compat.v1.disable_eager_execution()
 X = tf.compat.v1.placeholder(tf.float32, input)
@@ -62,6 +63,11 @@ init = tf.compat.v1.glorot_normal_initializer()
 
 with tf.Session() as sess:
     sess.run(init)
+    for epoch in range(epoch):
+        xbatch, ybatch = batchsize(batchsize, xtrain, ytrain)
+        sess.run(train_op, feed_dict={X: xbatch, Y: ybatch})
+        loss, acc = sess.run([lossop, accuracy], feed_dict={X: xbatch, Y: ybatch})
+        print("epoch " + str(epoch) + ", loss= " + "{:.4f}".format(loss) + ", acc= " + "{:.3f}".format(acc))
 
 def showimg(ndarr):
     img1 = ndarr.copy()
