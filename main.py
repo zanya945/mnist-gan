@@ -7,7 +7,7 @@ mnist = tf.keras.datasets.mnist
 
 def load_data(numclass=10):
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
-    xtrain = np.reshape(x_train,  (x_train.shape[0], -1))
+    xtrain = np.reshape(x_train, (x_train.shape[0], -1))
     xtest = np.reshape(x_test, (x_test.shape[0], -1))
 
     xtrain = xtrain.astype('float32')
@@ -19,19 +19,21 @@ def load_data(numclass=10):
     ytest = np.eye(numclass)[y_test]
     return xtrain, ytrain, xtest, ytest
 
-def batchsize(batchsize, label, data):
+
+def batch_size(batchsize, data, label):
     idx = np.arange(0, len(data))
-    idx = np.random.shuffle(idx)
+    np.random.shuffle(idx)
     idx = idx[:batchsize]
     data_shu = [data[i] for i in idx]
     label_shu = [label[i] for i in idx]
     return np.asarray(data_shu), np.asarray(label_shu)
 
+
 def build_model(X, input, output):
     n0 = input
     n1 = 256
     n2 = output
-    w1 = tf.Variable(tf.random.normal([n0,n1]))
+    w1 = tf.Variable(tf.random.normal([n0, n1]))
     b1 = tf.Variable(tf.random.normal([n1]))
     w2 = tf.Variable(tf.random.normal([n1, n2]))
     b2 = tf.Variable(tf.random.normal([n2]))
@@ -39,6 +41,7 @@ def build_model(X, input, output):
     Y1 = tf.add(tf.matmul(X, w1), b1)
     yhat = tf.add(tf.matmul(Y1, w2), b2)
     return yhat
+
 
 xtrain, ytrain, x_test, y_test = load_data()
 lr = 0.1
@@ -58,21 +61,20 @@ optimizer = tf.compat.v1.train.GradientDescentOptimizer(lr)
 train_op = optimizer.minimize(lossop)
 correct = tf.equal(tf.argmax(pred, 1), tf.argmax(Y, 1))
 accuracy = tf.reduce_mean(tf.cast(correct, tf.float32))
-init = tf.compat.v1.glorot_normal_initializer()
+init = tf.compat.v1.global_variables_initializer()
 
 with tf.compat.v1.Session() as sess:
     sess.run(init)
     for epoch in range(epoch):
-        xbatch, ybatch = batchsize(batchsize, xtrain, ytrain)
+        xbatch, ybatch = batch_size(batchsize, xtrain, ytrain)
         sess.run(train_op, feed_dict={X: xbatch, Y: ybatch})
         loss, acc = sess.run([lossop, accuracy], feed_dict={X: xbatch, Y: ybatch})
-        print("epoch " + str(epoch) + ", loss= " + "{:.4f}".format(loss) + ", acc= " + "{:.3f}".format(acc))
+    acc = sess.run(accuracy, feed_dict={X: x_test, Y: y_test})
+    print('test acc=' + '{:.3f}'.format(acc))
+    sess.close()
 
 def showimg(ndarr):
     img1 = ndarr.copy()
     img1.shape = (28, 28)
     plt.imshow(img1, cmap="gray")
     plt.show()
-
-
-
