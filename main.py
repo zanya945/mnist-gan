@@ -48,20 +48,19 @@ epoch = 5000
 input = xtrain.shape[1]
 output = ytrain.shape[1]
 tf.compat.v1.disable_eager_execution()
-X = tf.compat.v1.placeholder(tf.float32, input)
-Y = tf.compat.v1.placeholder(tf.float32, output)
+X = tf.compat.v1.placeholder(tf.float32, shape=[None, input])
+Y = tf.compat.v1.placeholder(tf.float32, shape=[None, output])
 
 yhat = build_model(X, input, output)
 pred = tf.nn.softmax(yhat)
-
-lossop = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits)
-optimizer = tf.train.GradientDescentOptimizer(lr)
+lossop = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=yhat, labels=Y))
+optimizer = tf.compat.v1.train.GradientDescentOptimizer(lr)
 train_op = optimizer.minimize(lossop)
 correct = tf.equal(tf.argmax(pred, 1), tf.argmax(Y, 1))
 accuracy = tf.reduce_mean(tf.cast(correct, tf.float32))
 init = tf.compat.v1.glorot_normal_initializer()
 
-with tf.Session() as sess:
+with tf.compat.v1.Session() as sess:
     sess.run(init)
     for epoch in range(epoch):
         xbatch, ybatch = batchsize(batchsize, xtrain, ytrain)
