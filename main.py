@@ -12,8 +12,8 @@ lr = 0.1
 batchsize = 128
 epoch = 4000
 
-input = xtrain.shape[1]
-output = ytrain.shape[1]
+input = xtrain.shape[1] #784
+output = ytrain.shape[1] #10
 tf.compat.v1.disable_eager_execution()
 X = tf.compat.v1.placeholder(tf.float32, shape=[None, input])
 Y = tf.compat.v1.placeholder(tf.float32, shape=[None, output])
