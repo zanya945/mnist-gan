@@ -10,7 +10,7 @@ from Preprocessing import Proprecessing
 xtrain, ytrain, x_test, y_test = Preprocessing.Proprecessing.load_data()
 lr = 0.1
 batchsize = 128
-epoch = 5000
+epoch = 4000
 
 input = xtrain.shape[1]
 output = ytrain.shape[1]

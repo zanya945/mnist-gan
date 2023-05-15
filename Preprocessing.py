@@ -18,6 +18,13 @@ class Proprecessing:
         ytrain = np.eye(numclass)[y_train]
         ytest = np.eye(numclass)[y_test]
         return xtrain, ytrain, xtest, ytest
+    def load_data_cnn(numclass = 10):
+        (x_train, y_train), (x_test, y_test) = mnist.load_data()
+        xtrain = x_train.reshape(-1, 28, 28, 1).astype('float32') / 255.0
+        xtest = x_test.reshape(-1, 28, 28, 1).astype('float32') / 255.0
+        ytrain = np.eye(numclass)[y_train]
+        ytest = np.eye(numclass)[y_test]
+        return xtrain, ytrain, xtest, ytest
 
     def batch_size(batchsize, data, label):
         idx = np.arange(0, len(data))
