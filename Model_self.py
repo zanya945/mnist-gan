@@ -1,6 +1,7 @@
 import tensorflow as tf
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, Dropout
+from keras.models import Sequential, Model
+from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, Dropout, BatchNormalization, Reshape, Input
+from keras.layers.activation import LeakyReLU
 
 def layer(input, wshape, bshape):
     w = tf.compat.v1.get_variable('w', wshape, initializer=tf.random_normal_initializer(stddev=(2.0 / wshape[0]) ** 0.5))
@@ -35,4 +36,18 @@ class Model:
         return model
     def generactor(self):
         model = Sequential()
+        model.add(Dense(256, input_dim=100))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+        model.add(Dense(512))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+        model.add(Dense(1024))
+        model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization(momentum=0.8))
+        model.add(Dense(784, activation='tanh'))
+        model.add(Reshape(28, 28, 1))
 
+        noise = Input(shape=(100,))
+        img = model(noise)
+        return Model(noise, img)

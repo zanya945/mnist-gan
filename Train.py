@@ -1,6 +1,6 @@
 import Preprocessing
 from keras.models import Sequential
-from Model import Model
+from Model_self import Model
 
 class Train:
     def cnn_train(self):

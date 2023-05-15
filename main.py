@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import Preprocessing
 from keras.models import Sequential, load_model
-from Model import Model
+from Model_self import Model
 from Preprocessing import Proprecessing
 
 discriminator = load_model('CNN_Mnist_sigmoid.h5')
