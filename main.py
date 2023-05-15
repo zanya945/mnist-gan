@@ -7,21 +7,8 @@ from keras.models import Sequential, load_model
 from Model import Model
 from Preprocessing import Proprecessing
 
+discriminator = load_model('CNN_Mnist_sigmoid.h5')
 
-xtrain, ytrain, x_test, y_test = Preprocessing.Proprecessing.load_data_cnn()
-# lr = 0.1
-# batchsize1 = 128
-# epoch1 = 10
-#
-# model = Sequential()
-# Model.cnn(model)
-# model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-# model.fit(xtrain, ytrain, epochs=epoch1, batch_size=batchsize1, verbose=1)
-#
-# loss, acc = model.evaluate(x_test, y_test)
-# print(loss, acc)
-# model.save('./CNN_Mnist.h5')
-model = load_model('./CNN_Mnist.h5')
 # input = xtrain.shape[1] #784
 # output = ytrain.shape[1] #10
 # tf.compat.v1.disable_eager_execution()
@@ -47,15 +34,4 @@ model = load_model('./CNN_Mnist.h5')
 #     print('test acc=' + '{:.3f}'.format(acc))
 #     sess.close()
 
-def showimg(n):
-    plt.imshow(x_test[n], cmap="gray")
-    plt.show()
 
-def one_img_predict(model, n):
-    predict = model.predict(x_test)
-    classes_x = np.argmax(predict, axis=1)
-    print('Prediction:', classes_x[n])
-    print('Answer:', y_test[n])
-    showimg(n)
-
-one_img_predict(model, 990)

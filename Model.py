@@ -31,6 +31,8 @@ class Model:
         model.add(Dropout(0))
         model.add(Flatten())
         model.add(Dense(84, activation= tf.nn.relu))
-        model.add(Dense(10, activation= tf.nn.softmax))
+        model.add(Dense(10, activation= tf.nn.sigmoid))
         return model
+    def generactor(self):
+        model = Sequential()
 
