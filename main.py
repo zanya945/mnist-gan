@@ -6,8 +6,10 @@ import Preprocessing
 from keras.models import Sequential, load_model
 from Model_self import Model
 from Preprocessing import Proprecessing
+from Train import Train
+from Gan import Gan
 
-discriminator = load_model('CNN_Mnist_sigmoid.h5')
+gan = Gan()
 
 # input = xtrain.shape[1] #784
 # output = ytrain.shape[1] #10

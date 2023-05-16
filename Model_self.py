@@ -23,7 +23,8 @@ class Model:
         with tf.compat.v1.variable_scope('output'):
             yhat = layer(Y2, [n2, n3], n3)
         return yhat
-    def cnn(model):
+    def cnn_classfition(self):
+        model = Sequential()
         model.add(Conv2D(filters=6, kernel_size=(5, 5), strides=1, padding='same', input_shape=(28, 28, 1), activation=tf.nn.relu))
         model.add(MaxPool2D(pool_size=(2,2), strides=2))
         model.add(Conv2D(filters=16, kernel_size=(5, 5), strides=1, padding='valid', activation=tf.nn.relu))
@@ -32,22 +33,6 @@ class Model:
         model.add(Dropout(0))
         model.add(Flatten())
         model.add(Dense(84, activation= tf.nn.relu))
-        model.add(Dense(10, activation= tf.nn.sigmoid))
-        return model
-    def generactor(self):
-        model = Sequential()
-        model.add(Dense(256, input_dim=100))
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(Dense(512))
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(Dense(1024))
-        model.add(LeakyReLU(alpha=0.2))
-        model.add(BatchNormalization(momentum=0.8))
-        model.add(Dense(784, activation='tanh'))
-        model.add(Reshape(28, 28, 1))
+        model.add(Dense(10, activation= tf.nn.softmax))
 
-        noise = Input(shape=(100,))
-        img = model(noise)
-        return Model(noise, img)
+

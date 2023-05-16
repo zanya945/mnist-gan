@@ -9,11 +9,10 @@ class Train:
         batchsize1 = 128
         epoch1 = 10
 
-        model = Sequential()
-        Model.cnn(model)
+        model = Model.cnn_discriminator()
         model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
         model.fit(xtrain, ytrain, epochs=epoch1, batch_size=batchsize1, verbose=1)
 
         loss, acc = model.evaluate(x_test, y_test)
         print(loss, acc)
-        model.save('./CNN_Mnist2.h5')
+        model.save('./CNN_Mnist_di.h5')
