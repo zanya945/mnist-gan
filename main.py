@@ -10,6 +10,8 @@ from Train import Train
 from Gan import Gan
 
 gan = Gan()
+gan.train_gan(epochs=30000, batch_size=32, sample_interval=1000)
+model = gan.img_generactor.save('model/img_generactor.h5')
 
 # input = xtrain.shape[1] #784
 # output = ytrain.shape[1] #10
